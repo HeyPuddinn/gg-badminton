@@ -12,12 +12,12 @@
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
   --bg:#161616;--ink:#ededed;--muted:#a9a9a9;--line:#3a3a3a;--soft:#232323;--card:#1d1d1d;
-  --a:#3b82f6;--a-soft:#17233f;--b:#d97706;--b-soft:#33260f;--g:#22c55e;--g-soft:#163020;
+  --a:#2563eb;--a-soft:#17233f;--b:#b45309;--b-soft:#33260f;--g:#15803d;--g-soft:#163020;
   --win:#22c55e;--chip:#ededed;color-scheme:dark;
 }}
 :root[data-theme="dark"]{
   --bg:#161616;--ink:#ededed;--muted:#a9a9a9;--line:#3a3a3a;--soft:#232323;--card:#1d1d1d;
-  --a:#3b82f6;--a-soft:#17233f;--b:#d97706;--b-soft:#33260f;--g:#22c55e;--g-soft:#163020;
+  --a:#2563eb;--a-soft:#17233f;--b:#b45309;--b-soft:#33260f;--g:#15803d;--g-soft:#163020;
   --win:#22c55e;--chip:#ededed;color-scheme:dark;
 }
 *,*::before,*::after{box-sizing:border-box}
@@ -57,7 +57,7 @@ th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);font-
 th{font-size:10.5px;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.5px}
 td.c,th.c{text-align:center;white-space:nowrap}
 .stand td:nth-child(2){font-weight:800}
-.rk{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:7px;font-weight:800;font-size:12px;color:#fff;background:var(--muted)}
+.rk{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:7px;font-weight:800;font-size:12px;color:#fff;background:#475569}
 .rk.r1{background:var(--g)}.rk.r2{background:var(--a)}
 .num{font-variant-numeric:tabular-nums;font-weight:800;text-align:center}
 .match{border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-bottom:12px;background:var(--card)}
@@ -131,7 +131,7 @@ var D1_MATCHUPS=[{id:'A1',g:'A',a:'T1',b:'T5',rest:'T3'},{id:'A2',g:'A',a:'T1',b
 var D1_BYID={};D1_MATCHUPS.forEach(function(m){D1_BYID[m.id]=m;});
 var D1_ROUNDS=[['A1','B1'],['A2','B2'],['A3','B3']];
 var PO_GAMES=[{label:'Yếu+Nữ',mk:'0 → 16'},{label:'TB+Lead',mk:'16 → 31'}];
-var BK_GAMES=[{label:'Yếu+Nữ',mk:'0 → 21'},{label:'TB+Lead',mk:'21 → 42'}];
+var BK_GAMES=[{label:'Yếu+Nữ',mk:'0 → 21'},{label:'TB+Lead',mk:'21 → ∞'}];
 var PO_MATCHES={P1:{a:'nhiA',b:'baB'},P2:{a:'nhiB',b:'baA'},P3:{a:'nhiA',b:'nhiB'},P4:{a:'baA',b:'baB'},P5:{a:'nhiA',b:'baA'},P6:{a:'nhiB',b:'baB'}};
 var PO_ROUNDS=[['P1','P2'],['P3','P4'],['P5','P6']];
 var PO_IDS=['P1','P2','P3','P4','P5','P6'];
@@ -231,7 +231,7 @@ function renderLich(slots){
   h+='<h2 class="sec"><span class="pill G">NGÀY 2</span>Play-off · vòng tròn · tiếp sức 31</h2>';
   if(!d1done)h+='<div class="banner n">⏳ Nhập xong Ngày 1, các đội Play-off sẽ tự hiện tên vào đây.</div>';
   PO_ROUNDS.forEach(function(pair,i){h+='<div class="round">Lượt '+(i+1)+'</div>';pair.forEach(function(id,j){var m=PO_MATCHES[id];h+=relayCard('G','po.'+id,nm(m.a,slots),nm(m.b,slots),STATE.po[id],PO_GAMES,teamOfSlot(m.a,slots),teamOfSlot(m.b,slots),j+1);});});
-  h+='<h2 class="sec"><span class="pill D">NGÀY 2</span>Bán kết &amp; Chung kết · tiếp sức 42</h2>';
+  h+='<h2 class="sec"><span class="pill D">NGÀY 2</span>Bán kết &amp; Chung kết · tiếp sức · chặng 2 (TB+Lead) 21 → ∞</h2>';
   h+='<div class="round">Bán kết · 2 sân</div>';
   h+=relayCard('A','semi.bk1',nm('nhatA',slots),nm('po2',slots),STATE.semi.bk1,BK_GAMES,teamOfSlot('nhatA',slots),teamOfSlot('po2',slots),1,'BK1');
   h+=relayCard('B','semi.bk2',nm('nhatB',slots),nm('po1',slots),STATE.semi.bk2,BK_GAMES,teamOfSlot('nhatB',slots),teamOfSlot('po1',slots),2,'BK2');
