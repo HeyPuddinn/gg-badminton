@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Giải cầu lông nội bộ</title>
+<style>
+:root{
+  --bg:#ffffff;--ink:#1a1a1a;--muted:#595959;--line:#d4d4d4;--soft:#f4f4f4;--card:#ffffff;
+  --a:#1d4ed8;--a-soft:#e8effd;--b:#b45309;--b-soft:#fbeedd;--g:#15803d;--g-soft:#e3f2e9;
+  --win:#15803d;--chip:#1a1a1a;color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#161616;--ink:#ededed;--muted:#a9a9a9;--line:#3a3a3a;--soft:#232323;--card:#1d1d1d;
+  --a:#3b82f6;--a-soft:#17233f;--b:#d97706;--b-soft:#33260f;--g:#22c55e;--g-soft:#163020;
+  --win:#22c55e;--chip:#ededed;color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#161616;--ink:#ededed;--muted:#a9a9a9;--line:#3a3a3a;--soft:#232323;--card:#1d1d1d;
+  --a:#3b82f6;--a-soft:#17233f;--b:#d97706;--b-soft:#33260f;--g:#22c55e;--g-soft:#163020;
+  --win:#22c55e;--chip:#ededed;color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+img{max-width:100%}[hidden]{display:none!important}
+.wrap{max-width:860px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header{position:sticky;top:0;z-index:10;background:var(--bg);border-bottom:1px solid var(--line)}
+.hd{display:flex;align-items:center;gap:10px;padding-block:12px}
+.hd h1{font-size:17px;margin:0;font-weight:800;flex:1;min-width:0}
+.hd h1 span{font-weight:400;color:var(--muted);font-size:13px}
+.dot{font-size:11px;font-weight:700;color:var(--muted);white-space:nowrap}
+.dot b{color:var(--g)}
+.btn{font:inherit;font-weight:700;font-size:12.5px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;padding:7px 12px;cursor:pointer}
+.btn.pri{background:var(--a);border-color:var(--a);color:#fff}
+.btn.on{background:var(--g);border-color:var(--g);color:#fff}
+.btn:focus-visible{outline:2px solid var(--a);outline-offset:2px}
+.tabs{display:flex;gap:4px}
+.tab{flex:1;font:inherit;font-weight:700;font-size:13px;background:none;border:0;border-bottom:3px solid transparent;color:var(--muted);padding:10px 4px;cursor:pointer}
+.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--a)}
+main{padding-block:18px 48px}
+.adminbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:16px}
+.adminbar input{font:inherit;padding:7px 9px;border:1px solid var(--line);border-radius:7px;background:var(--card);color:var(--ink);width:120px}
+.adminbar .msg{font-size:12px;color:var(--b);font-weight:700}
+.banner{border-radius:10px;padding:9px 13px;margin-bottom:16px;font-size:12.5px;font-weight:700;color:var(--ink);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.banner.g{background:var(--g-soft);border:1px solid var(--g)}
+.banner.b{background:var(--b-soft);border:1px solid var(--b)}
+.banner.n{background:var(--soft);border:1px solid var(--line);color:var(--muted)}
+h2.sec{font-size:15px;margin:22px 0 10px;font-weight:800;display:flex;align-items:center;gap:9px}
+h2.sec:first-child{margin-top:0}
+h2.sec .pill{font-size:11px;font-weight:800;color:#fff;border-radius:20px;padding:3px 11px}
+.pill.A{background:var(--a)}.pill.B{background:var(--b)}.pill.G{background:var(--g)}.pill.D{background:var(--chip);color:var(--bg)}
+.round{font-size:12px;font-weight:800;letter-spacing:.4px;color:var(--muted);text-transform:uppercase;margin:16px 0 8px;display:flex;align-items:center;gap:8px}
+.round::after{content:"";flex:1;height:1px;background:var(--line)}
+table{width:100%;border-collapse:collapse}
+.tscroll{overflow-x:auto}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);font-size:13.5px;vertical-align:middle}
+th{font-size:10.5px;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.5px}
+td.c,th.c{text-align:center;white-space:nowrap}
+.stand td:nth-child(2){font-weight:800}
+.rk{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:7px;font-weight:800;font-size:12px;color:#fff;background:var(--muted)}
+.rk.r1{background:var(--g)}.rk.r2{background:var(--a)}
+.num{font-variant-numeric:tabular-nums;font-weight:800;text-align:center}
+.match{border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-bottom:12px;background:var(--card)}
+.match>.mtop{padding:9px 13px;font-weight:800;font-size:13px;color:#fff;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.match.A>.mtop{background:var(--a)}.match.B>.mtop{background:var(--b)}.match.G>.mtop{background:var(--g)}.match.D>.mtop{background:var(--chip);color:var(--bg)}
+.mtop small{font-weight:600;font-size:11px;opacity:.95}
+.game{display:flex;align-items:center;gap:10px;padding:9px 13px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.game:last-child{border-bottom:0}
+.game .role{font-size:11px;font-weight:800;color:var(--muted);width:92px;flex:none}
+.game .side{flex:1;min-width:120px;font-weight:600}
+.game .side.w{color:var(--win);font-weight:800}
+.game .sc{font-variant-numeric:tabular-nums;font-weight:800;white-space:nowrap}
+.mk{font-size:11px;color:var(--muted);font-weight:700;white-space:nowrap}
+.pend{color:var(--muted);font-style:italic;font-weight:600}
+.edit{display:flex;align-items:center;gap:6px;flex-wrap:wrap;width:100%;margin-top:4px}
+.wbtn{font:inherit;font-weight:800;font-size:12px;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:7px;padding:7px 12px;cursor:pointer}
+.wbtn.sel{background:var(--g);border-color:var(--g);color:#fff}
+.clr{font:inherit;font-size:11px;border:0;background:none;color:var(--muted);cursor:pointer;text-decoration:underline}
+.roster td:first-child{font-weight:800}
+.roster .r{font-size:10px;color:var(--muted);font-weight:800;letter-spacing:.3px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--chip);color:var(--bg);padding:10px 16px;border-radius:10px;font-weight:700;font-size:13px;z-index:30;max-width:90%;text-align:center}
+.foot{color:var(--muted);font-size:11.5px;margin-top:28px;line-height:1.6}
+@media (max-width:560px){.game .role{width:100%}.hd h1 span,.dot{display:none}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <div class="hd">
+    <h1>Giải cầu lông nội bộ 🏸 <span>6 đội · 2 ngày</span></h1>
+    <span class="dot" id="statusDot"></span>
+    <button class="btn" id="adminToggle" type="button">Admin</button>
+  </div>
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" data-tab="bxh" aria-selected="true" type="button">Bảng xếp hạng</button>
+    <button class="tab" role="tab" data-tab="lich" aria-selected="false" type="button">Lịch &amp; kết quả</button>
+    <button class="tab" role="tab" data-tab="doi" aria-selected="false" type="button">Đội</button>
+  </div>
+</div></header>
+<div class="wrap"><main id="app"></main></div>
+<div id="toastHost"></div>
+
+<!-- Firebase (kho dữ liệu dùng chung, miễn phí) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
+<script>
+/* ============================================================
+   DÁN CẤU HÌNH FIREBASE CỦA BẠN VÀO ĐÂY  (xem file HUONG-DAN.txt)
+   Lấy ở: Firebase console → Project settings → Your apps → Web app → firebaseConfig
+   ============================================================ */
+var FIREBASE_CONFIG = {
+  apiKey: "AIzaSyAhAXwJDesJTGB1BvN70V2t7YdFJ1TN-FM",
+  authDomain: "badminton-d2de7.firebaseapp.com",
+  projectId: "badminton-d2de7",
+  storageBucket: "badminton-d2de7.firebasestorage.app",
+  messagingSenderId: "513039968064",
+  appId: "1:513039968064:web:598a1f27a43bb6527fbca5"
+};
+var PIN = "8888"; // đổi PIN admin tại đây nếu muốn
+</script>
+
+<script>
+"use strict";
+(function(){
+// ---------- DATA ----------
+var TEAMS={T1:{name:'Team 1',m:['Chủ','Thien','Kiet Nguyen','Nhi Nguyen']},T2:{name:'Team 2',m:['Thắng','Anh Tran','Y Nguyen','Quynh Phan']},T3:{name:'Team 3',m:['Phước','Tien Trung','Tri','An']},T4:{name:'Team 4',m:['Tuấn','Nga','Hieu Nguyen','Lan Ton']},T5:{name:'Team 5',m:['Kiên','Kiet Trinh','Vu Vo','Ha Phan']},T6:{name:'Team 6',m:['Thức','Liem','Dung Truong','Diep Pham']}};
+var ROLES=['Lead · chủ lực','TB','Yếu','Nữ'];
+var GROUPS={A:['T1','T5','T3'],B:['T4','T2','T6']};
+var D1_GAMES=[{label:'Nữ+Lead',to:15,pts:2},{label:'Yếu+TB',to:15,pts:2},{label:'Yếu+Nữ',to:21,pts:3}];
+var D1_MATCHUPS=[{id:'A1',g:'A',a:'T1',b:'T5',rest:'T3'},{id:'A2',g:'A',a:'T1',b:'T3',rest:'T5'},{id:'A3',g:'A',a:'T5',b:'T3',rest:'T1'},{id:'B1',g:'B',a:'T4',b:'T2',rest:'T6'},{id:'B2',g:'B',a:'T4',b:'T6',rest:'T2'},{id:'B3',g:'B',a:'T2',b:'T6',rest:'T4'}];
+var D1_BYID={};D1_MATCHUPS.forEach(function(m){D1_BYID[m.id]=m;});
+var D1_ROUNDS=[['A1','B1'],['A2','B2'],['A3','B3']];
+var PO_GAMES=[{label:'Yếu+Nữ',mk:'0 → 16'},{label:'TB+Lead',mk:'16 → 31'}];
+var BK_GAMES=[{label:'Yếu+Nữ',mk:'0 → 21'},{label:'TB+Lead',mk:'21 → 42'}];
+var PO_MATCHES={P1:{a:'nhiA',b:'baB'},P2:{a:'nhiB',b:'baA'},P3:{a:'nhiA',b:'nhiB'},P4:{a:'baA',b:'baB'},P5:{a:'nhiA',b:'baA'},P6:{a:'nhiB',b:'baB'}};
+var PO_ROUNDS=[['P1','P2'],['P3','P4'],['P5','P6']];
+var PO_IDS=['P1','P2','P3','P4','P5','P6'];
+var SLOT_LABEL={nhatA:'Nhất A',nhiA:'Nhì A',baA:'Ba A',nhatB:'Nhất B',nhiB:'Nhì B',baB:'Ba B',po1:'Hạng 1 PO',po2:'Hạng 2 PO',winBk1:'Thắng BK1',winBk2:'Thắng BK2'};
+var ALL_IDS_D1=['A1','A2','A3','B1','B2','B3'];
+var ALL_IDS_R2=['P1','P2','P3','P4','P5','P6','bk1','bk2','ck'];
+
+// ---------- LOGIC ----------
+function winnerOf(r){if(!r)return null;if(r.w==='a'||r.w==='b')return r.w;if(typeof r.a==='number'&&typeof r.b==='number'){if(r.a===r.b)return null;return r.a>r.b?'a':'b';}return null;}
+function diffOf(r){if(r&&typeof r.a==='number'&&typeof r.b==='number')return r.a-r.b;return 0;}
+function rankBy(rows,h2h){var byPts={};rows.forEach(function(r){(byPts[r.pts]=byPts[r.pts]||[]).push(r);});var out=[];Object.keys(byPts).map(Number).sort(function(a,b){return b-a;}).forEach(function(p){var tied=byPts[p];if(tied.length===1){out.push(tied[0]);return;}tied.forEach(function(r){r._h=tied.reduce(function(s,o){return s+(o===r?0:(h2h[r.id][o.id]||0));},0);});tied.sort(function(a,b){return (b._h-a._h)||(b.diff-a.diff);});out.push.apply(out,tied);});return out;}
+function day1Group(st,g){var ids=GROUPS[g];var T={};ids.forEach(function(id){T[id]={id:id,team:id,pts:0,diff:0};});var h2h={};ids.forEach(function(x){h2h[x]={};ids.forEach(function(y){h2h[x][y]=0;});});var played=0,total=0;D1_MATCHUPS.filter(function(m){return m.g===g;}).forEach(function(m){var games=(st.d1&&st.d1[m.id])||[];D1_GAMES.forEach(function(def,i){total++;var w=winnerOf(games[i]);if(!w)return;played++;var d=diffOf(games[i]);if(w==='a'){T[m.a].pts+=def.pts;h2h[m.a][m.b]+=def.pts;}else{T[m.b].pts+=def.pts;h2h[m.b][m.a]+=def.pts;}T[m.a].diff+=d;T[m.b].diff-=d;});});return{ranked:rankBy(ids.map(function(id){return T[id];}),h2h),complete:played===total,played:played,total:total};}
+function poStandings(st,slots){var sl=['nhiA','baA','nhiB','baB'];var T={};sl.forEach(function(s){T[s]={id:s,slot:s,team:slots[s],pts:0,diff:0};});var h2h={};sl.forEach(function(x){h2h[x]={};sl.forEach(function(y){h2h[x][y]=0;});});var played=0;PO_IDS.forEach(function(id){var r=st.po&&st.po[id];var w=winnerOf(r);if(!w)return;played++;var m=PO_MATCHES[id];var d=diffOf(r);if(w==='a'){T[m.a].pts+=1;h2h[m.a][m.b]+=1;}else{T[m.b].pts+=1;h2h[m.b][m.a]+=1;}T[m.a].diff+=d;T[m.b].diff-=d;});return{ranked:rankBy(sl.map(function(s){return T[s];}),h2h),complete:played===PO_IDS.length,played:played};}
+function relayWinnerTeam(r,ta,tb){var w=winnerOf(r);if(!w||!ta||!tb)return null;return w==='a'?ta:tb;}
+function resolveSlots(st){var s={};var A=day1Group(st,'A'),B=day1Group(st,'B');if(A.complete){s.nhatA=A.ranked[0].id;s.nhiA=A.ranked[1].id;s.baA=A.ranked[2].id;}if(B.complete){s.nhatB=B.ranked[0].id;s.nhiB=B.ranked[1].id;s.baB=B.ranked[2].id;}if(A.complete&&B.complete){var po=poStandings(st,s);if(po.complete){s.po1=po.ranked[0].team;s.po2=po.ranked[1].team;}}var b1=relayWinnerTeam(st.semi&&st.semi.bk1,s.nhatA,s.po2);var b2=relayWinnerTeam(st.semi&&st.semi.bk2,s.nhatB,s.po1);if(b1)s.winBk1=b1;if(b2)s.winBk2=b2;return s;}
+function teamOfSlot(slot,slots){if(TEAMS[slot])return slot;return slots[slot]||null;}
+
+// ---------- RUNTIME (Firestore) ----------
+var STATE={d1:{},po:{},semi:{},final:{}};
+var fdb=null, connected=false, admin=false, tab='bxh', loaded=false;
+try{admin=localStorage.getItem('clg_admin')==='1';}catch(e){}
+
+function nm(slot,slots){var t=teamOfSlot(slot,slots);return t?TEAMS[t].name:(SLOT_LABEL[slot]||slot);}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function toast(msg){var t=document.createElement('div');t.className='toast';t.textContent=msg;document.getElementById('toastHost').appendChild(t);setTimeout(function(){t.remove();},2800);}
+function setStatus(txt){var el=document.getElementById('statusDot');if(!el)return;el.innerHTML=connected?'<b>● trực tuyến</b>':('● '+(txt||'ngoại tuyến'));}
+
+function connectDb(){
+  if(!window.firebase||String(FIREBASE_CONFIG.apiKey).indexOf('DÁN')>=0){loaded=true;setStatus('chưa cấu hình');render();return;}
+  try{firebase.initializeApp(FIREBASE_CONFIG);fdb=firebase.firestore();connected=true;}catch(e){loaded=true;setStatus('lỗi cấu hình');render();return;}
+  setStatus();
+  fdb.collection('d1').onSnapshot(function(snap){STATE.d1={};snap.forEach(function(d){var v=d.data();STATE.d1[d.id]=(v&&v.g)||[];});loaded=true;render();},dbErr);
+  fdb.collection('r2').onSnapshot(function(snap){STATE.po={};STATE.semi={};STATE.final={};snap.forEach(function(d){var v=(d.data()||{}).v;var id=d.id;if(id.charAt(0)==='P')STATE.po[id]=v;else if(id==='ck')STATE.final.ck=v;else STATE.semi[id]=v;});loaded=true;render();},dbErr);
+}
+function dbErr(e){loaded=true;connected=false;setStatus('mất kết nối');render();toast('Lỗi dữ liệu: '+(e&&e.message||e));}
+
+function writeD1(mid,i,val){var arr=(STATE.d1[mid]||[null,null,null]).slice();arr[i]=val;STATE.d1[mid]=arr;render();if(fdb)fdb.collection('d1').doc(mid).set({g:arr}).catch(writeErr);}
+function writeR2(id,val){if(id.charAt(0)==='P'){if(val===null)delete STATE.po[id];else STATE.po[id]=val;}else if(id==='ck'){STATE.final=val===null?{}:{ck:val};}else{if(val===null)delete STATE.semi[id];else STATE.semi[id]=val;}render();if(fdb){var ref=fdb.collection('r2').doc(id);(val===null?ref.delete():ref.set({v:val})).catch(writeErr);}}
+function writeErr(e){toast('Lưu lỗi: '+(e&&e.message||e));}
+function setResult(path,val){if(!fdb){toast('Chưa kết nối Firebase (xem HUONG-DAN.txt).');return;}var p=path.split('.');if(p[0]==='d1')writeD1(p[1],+p[2],val);else writeR2(p[0]==='final'?'ck':p[1],val);}
+
+// ---------- RENDER ----------
+function render(){
+  var slots=resolveSlots(STATE);var el=document.getElementById('app');var h='';
+  if(!connected&&loaded)h+='<div class="banner n">🔌 Chưa kết nối Firebase. Hãy dán cấu hình vào index.html (xem HUONG-DAN.txt).</div>';
+  else if(!loaded)h+='<div class="banner n">⏳ Đang tải dữ liệu…</div>';
+  if(admin)h+='<div class="banner b" id="adminBanner">✏️ Chế độ ADMIN — bấm đội thắng mỗi ván, tự tính điểm &amp; lưu cho mọi người. <button class="btn" id="resetBtn" type="button" style="margin-left:auto">↺ Reset giải</button></div>';
+  if(tab==='bxh')h+=renderBXH(slots);else if(tab==='lich')h+=renderLich(slots);else h+=renderDoi();
+  el.innerHTML=h;wire();
+}
+function standTable(res,unit){
+  var rows=res.ranked.map(function(r,i){var cls=i===0?'r1':(i===1?'r2':'');return '<tr><td class="c"><span class="rk '+cls+'">'+(i+1)+'</span></td><td>'+esc(TEAMS[r.team].name)+'</td><td class="num">'+r.pts+'</td></tr>';}).join('');
+  return '<div class="tscroll"><table class="stand"><tr><th class="c">#</th><th>Đội</th><th class="c">'+unit+'</th></tr>'+rows+'</table></div>';
+}
+function renderBXH(slots){
+  var A=day1Group(STATE,'A'),B=day1Group(STATE,'B');
+  var h='<h2 class="sec"><span class="pill A">NGÀY 1</span>Vòng bảng</h2>';
+  h+='<h2 class="sec" style="font-size:14px"><span class="pill A">A</span>Bảng A <span style="color:var(--muted);font-weight:600;font-size:12px">'+(A.complete?'· đã xong':'· '+A.played+'/'+A.total+' ván')+'</span></h2>'+standTable(A,'Điểm');
+  h+='<h2 class="sec" style="font-size:14px"><span class="pill B">B</span>Bảng B <span style="color:var(--muted);font-weight:600;font-size:12px">'+(B.complete?'· đã xong':'· '+B.played+'/'+B.total+' ván')+'</span></h2>'+standTable(B,'Điểm');
+  if(A.complete&&B.complete){var po=poStandings(STATE,slots);h+='<h2 class="sec"><span class="pill G">NGÀY 2</span>Play-off</h2>'+standTable(po,'Trận thắng');if(po.complete)h+='<div class="banner g">Vào bán kết: <b>'+esc(TEAMS[po.ranked[0].team].name)+'</b> (Hạng 1 PO) &amp; <b>'+esc(TEAMS[po.ranked[1].team].name)+'</b> (Hạng 2 PO)</div>';}
+  var champ=relayWinnerTeam(STATE.final&&STATE.final.ck,slots.winBk1,slots.winBk2);
+  if(slots.winBk1||slots.winBk2||champ){
+    h+='<h2 class="sec"><span class="pill D">KẾT</span>Bán kết → Chung kết</h2><div class="tscroll"><table><tr><th>Trận</th><th>Kết quả</th></tr>';
+    h+='<tr><td>BK1 · '+esc(nm('nhatA',slots))+' vs '+esc(nm('po2',slots))+'</td><td>'+(slots.winBk1?'<b style="color:var(--win)">'+esc(TEAMS[slots.winBk1].name)+'</b> thắng':'<span class="pend">chưa đá</span>')+'</td></tr>';
+    h+='<tr><td>BK2 · '+esc(nm('nhatB',slots))+' vs '+esc(nm('po1',slots))+'</td><td>'+(slots.winBk2?'<b style="color:var(--win)">'+esc(TEAMS[slots.winBk2].name)+'</b> thắng':'<span class="pend">chưa đá</span>')+'</td></tr></table></div>';
+    if(champ)h+='<div class="banner g" style="font-size:15px">🏆 VÔ ĐỊCH: <b>'+esc(TEAMS[champ].name)+'</b></div>';
+  }
+  return h;
+}
+function gameEditor(path,r,na,nb){var w=winnerOf(r);return '<div class="edit" data-path="'+path+'"><button type="button" class="wbtn wa'+(w==='a'?' sel':'')+'">'+esc(na)+' thắng</button><button type="button" class="wbtn wb'+(w==='b'?' sel':'')+'">'+esc(nb)+' thắng</button>'+(r?'<button type="button" class="clr">bỏ chọn</button>':'')+'</div>';}
+function resultLine(r,na,nb){var w=winnerOf(r);if(!w)return '<span class="pend">chưa có kết quả</span>';return '<b style="color:var(--win)">'+esc(w==='a'?na:nb)+' thắng</b>';}
+function scoreMid(r){return winnerOf(r)?'✓':'–';}
+function d1Card(id,san){
+  var m=D1_BYID[id];var cls=m.g;
+  var h='<div class="match '+cls+'"><div class="mtop"><span>'+esc(TEAMS[m.a].name)+' vs '+esc(TEAMS[m.b].name)+'</span><small>Sân '+san+' · Bảng '+m.g+' · nghỉ: '+esc(TEAMS[m.rest].name)+'</small></div>';
+  D1_GAMES.forEach(function(def,i){
+    var r=(STATE.d1[m.id]||[])[i];var w=winnerOf(r);
+    h+='<div class="game"><span class="role">'+def.label+'</span>';
+    if(admin)h+='<div class="side"><span class="mk">+'+def.pts+'đ cho đội thắng ván này</span></div>'+gameEditor('d1.'+m.id+'.'+i,r,TEAMS[m.a].name,TEAMS[m.b].name);
+    else h+='<span class="side'+(w==='a'?' w':'')+'">'+esc(TEAMS[m.a].name)+'</span><span class="sc">'+scoreMid(r)+'</span><span class="side'+(w==='b'?' w':'')+'" style="text-align:right">'+esc(TEAMS[m.b].name)+'</span><span class="mk">+'+def.pts+'đ</span>';
+    h+='</div>';
+  });
+  return h+'</div>';
+}
+function relayCard(cls,path,na,nb,r,games,ta,tb,san,title){
+  var ready=ta&&tb;
+  var h='<div class="match '+cls+'"><div class="mtop"><span>'+(title?esc(title)+' · ':'')+esc(na)+' vs '+esc(nb)+'</span><small>Sân '+san+' · '+games.map(function(g){return g.label+' '+g.mk;}).join(' · ')+'</small></div><div class="game"><span class="role">Kết quả</span>';
+  if(admin&&ready)h+='<div class="side"><span class="mk">chọn đội thắng trận</span></div>'+gameEditor(path,r,na,nb);
+  else if(admin&&!ready)h+='<div class="side pend">Chưa xác định đủ 2 đội</div>';
+  else h+='<div class="side">'+resultLine(r,na,nb)+'</div>';
+  return h+'</div></div>';
+}
+function renderLich(slots){
+  var h='<h2 class="sec"><span class="pill A">NGÀY 1</span>Vòng bảng · 2 sân song song</h2>';
+  D1_ROUNDS.forEach(function(pair,i){h+='<div class="round">Lượt '+(i+1)+'</div>'+d1Card(pair[0],1)+d1Card(pair[1],2);});
+  var d1done=day1Group(STATE,'A').complete&&day1Group(STATE,'B').complete;
+  h+='<h2 class="sec"><span class="pill G">NGÀY 2</span>Play-off · vòng tròn · tiếp sức 31</h2>';
+  if(!d1done)h+='<div class="banner n">⏳ Nhập xong Ngày 1, các đội Play-off sẽ tự hiện tên vào đây.</div>';
+  PO_ROUNDS.forEach(function(pair,i){h+='<div class="round">Lượt '+(i+1)+'</div>';pair.forEach(function(id,j){var m=PO_MATCHES[id];h+=relayCard('G','po.'+id,nm(m.a,slots),nm(m.b,slots),STATE.po[id],PO_GAMES,teamOfSlot(m.a,slots),teamOfSlot(m.b,slots),j+1);});});
+  h+='<h2 class="sec"><span class="pill D">NGÀY 2</span>Bán kết &amp; Chung kết · tiếp sức 42</h2>';
+  h+='<div class="round">Bán kết · 2 sân</div>';
+  h+=relayCard('A','semi.bk1',nm('nhatA',slots),nm('po2',slots),STATE.semi.bk1,BK_GAMES,teamOfSlot('nhatA',slots),teamOfSlot('po2',slots),1,'BK1');
+  h+=relayCard('B','semi.bk2',nm('nhatB',slots),nm('po1',slots),STATE.semi.bk2,BK_GAMES,teamOfSlot('nhatB',slots),teamOfSlot('po1',slots),2,'BK2');
+  h+='<div class="round">Chung kết</div>';
+  h+=relayCard('D','final.ck',nm('winBk1',slots),nm('winBk2',slots),STATE.final.ck,BK_GAMES,teamOfSlot('winBk1',slots),teamOfSlot('winBk2',slots),1,'🏆 Chung kết');
+  return h;
+}
+function renderDoi(){
+  var h='<h2 class="sec"><span class="pill D">ĐỘI</span>Danh sách · 6 đội · 24 người</h2><div class="tscroll"><table class="roster"><tr><th>Đội</th><th>'+ROLES.map(function(r){return '<span class="r">'+r+'</span>';}).join('</th><th>')+'</th></tr>';
+  Object.keys(TEAMS).forEach(function(id){h+='<tr><td>'+esc(TEAMS[id].name)+'</td>'+TEAMS[id].m.map(function(x){return '<td>'+esc(x)+'</td>';}).join('')+'</tr>';});
+  return h+'</table></div><p class="foot">Thứ tự 4 cột theo vai: Lead · TB · Yếu · Nữ.<br>Ngày 1 mỗi cặp đánh 3 ván: Nữ+Lead (+2đ) · Yếu+TB (+2đ) · Yếu+Nữ (+3đ). Xếp hạng bảng: Điểm → Đối đầu.</p>';
+}
+function wire(){
+  document.querySelectorAll('.edit').forEach(function(ed){
+    var path=ed.getAttribute('data-path');
+    ed.querySelector('.wa').addEventListener('click',function(){setResult(path,{w:'a'});});
+    ed.querySelector('.wb').addEventListener('click',function(){setResult(path,{w:'b'});});
+    var clr=ed.querySelector('.clr');if(clr)clr.addEventListener('click',function(){setResult(path,null);});
+  });
+  var rb=document.getElementById('resetBtn');if(rb)rb.addEventListener('click',askReset);
+}
+function askReset(){var host=document.getElementById('adminBanner');if(!host)return;host.innerHTML='⚠️ Xóa toàn bộ kết quả và chạy lại từ đầu? <button class="btn pri" id="resetYes" type="button">Xóa hết</button> <button class="btn" id="resetNo" type="button">Hủy</button>';document.getElementById('resetYes').addEventListener('click',doReset);document.getElementById('resetNo').addEventListener('click',render);}
+function doReset(){STATE={d1:{},po:{},semi:{},final:{}};render();if(!fdb){toast('Chưa kết nối Firebase.');return;}ALL_IDS_D1.forEach(function(id){fdb.collection('d1').doc(id).delete().catch(function(){});});ALL_IDS_R2.forEach(function(id){fdb.collection('r2').doc(id).delete().catch(function(){});});toast('Đã reset — giải chạy lại từ đầu.');}
+
+// ---------- CHROME ----------
+function bootChrome(){
+  document.querySelectorAll('.tab').forEach(function(t){t.addEventListener('click',function(){tab=t.getAttribute('data-tab');document.querySelectorAll('.tab').forEach(function(x){x.setAttribute('aria-selected',x===t?'true':'false');});render();});});
+  var at=document.getElementById('adminToggle');
+  function paint(){at.textContent=admin?'Thoát admin':'Admin';at.className='btn'+(admin?' on':'');}
+  paint();
+  at.addEventListener('click',function(){if(admin){admin=false;try{localStorage.removeItem('clg_admin');}catch(e){}paint();render();return;}pinPrompt();});
+}
+function pinPrompt(){
+  var el=document.getElementById('app');var box=document.createElement('div');box.className='adminbar';
+  box.innerHTML='<b>Nhập PIN admin:</b> <input type="password" id="pinIn" inputmode="numeric" autocomplete="off"> <button class="btn pri" type="button" id="pinOk">Vào</button> <span class="msg" id="pinMsg"></span>';
+  el.prepend(box);var inp=document.getElementById('pinIn');inp.focus();
+  function go(){if(inp.value===String(PIN)){admin=true;try{localStorage.setItem('clg_admin','1');}catch(e){}var at=document.getElementById('adminToggle');at.textContent='Thoát admin';at.className='btn on';render();}else document.getElementById('pinMsg').textContent='Sai PIN';}
+  document.getElementById('pinOk').addEventListener('click',go);inp.addEventListener('keydown',function(e){if(e.key==='Enter')go();});
+}
+
+bootChrome();render();connectDb();
+})();
+</script>
+</body>
+</html>
